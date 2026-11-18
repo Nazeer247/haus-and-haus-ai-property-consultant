@@ -1,86 +1,42 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#101512" />
-  <meta name="description" content="A premium AI property consultant demo for Haus & Haus Dubai." />
-  <title>Haus & Haus | AI Property Consultant</title>
-  <link rel="icon" type="image/svg+xml" href="logo.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101712">
+<meta name="description" content="Haus & Haus floating property consultant widget concept.">
+<title>Haus & Haus | Floating Consultant Demo</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="announcement"><span class="status-dot"></span> YOUR DUBAI PROPERTY JOURNEY, REIMAGINED</div>
-  <header class="site-header">
-    <a class="brand" href="#" aria-label="Haus and Haus home">
-      <span class="brand-mark">H<span>H</span></span>
-      <span class="brand-name">haus<span>&</span>haus<small>REAL ESTATE</small></span>
-    </a>
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#discover">Discover</a><a href="#experience">The experience</a><a href="#about">About the demo</a>
-    </nav>
-    <a class="header-cta" href="#consultant">Talk to the consultant <span>↗</span></a>
-    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-image" role="img" aria-label="Dubai skyline at sunset"></div>
-      <div class="hero-shade"></div>
-      <div class="hero-content">
-        <p class="eyebrow"><span></span> PROPERTY, WITH A PERSONAL TOUCH</p>
-        <h1>Find a place<br/>to <em>belong.</em></h1>
-        <p class="hero-copy">A smarter way to explore Dubai property. Tell us what matters to you, and let your property journey begin with a conversation.</p>
-        <div class="hero-actions"><a class="button button-light" href="#consultant">Meet your AI consultant <span>↗</span></a><a class="text-link" href="#discover">Explore the experience <span>↓</span></a></div>
-        <div class="hero-footnote"><span class="line"></span> MADE FOR THE WAY YOU WANT TO LIVE</div>
-      </div>
-      <div class="hero-side-note">DUBAI · UNITED ARAB EMIRATES</div>
-    </section>
-
-    <section class="intro section-wrap" id="discover">
-      <div class="section-kicker">01 / A MORE HUMAN SEARCH</div>
-      <div class="intro-grid">
-        <h2>Less searching.<br/><em>More finding.</em></h2>
-        <div><p class="large-copy">The right home is about more than bedrooms and square footage. It’s about how you want to live.</p><p class="muted">This concept brings property discovery into one guided conversation — helping visitors clarify their needs before speaking with a property specialist.</p></div>
-      </div>
-      <div class="feature-grid" id="experience">
-        <article class="feature"><span class="feature-number">01</span><div class="feature-icon">⌖</div><h3>Start with your intent</h3><p>Buying, renting or exploring an investment? Begin with what brings you here.</p></article>
-        <article class="feature"><span class="feature-number">02</span><div class="feature-icon">◇</div><h3>Make it personal</h3><p>Share your preferred areas, budget, property type and lifestyle priorities.</p></article>
-        <article class="feature"><span class="feature-number">03</span><div class="feature-icon">↗</div><h3>Move forward clearly</h3><p>Get a concise brief you can take to the Haus & Haus team to continue the conversation.</p></article>
-      </div>
-    </section>
-
-    <section class="consultant-section" id="consultant">
-      <div class="consultant-backdrop"></div>
-      <div class="consultant-layout section-wrap">
-        <div class="consultant-copy">
-          <div class="section-kicker light-kicker">02 / YOUR PROPERTY CONCIERGE</div>
-          <h2>Let’s find your<br/><em>next chapter.</em></h2>
-          <p>Tell the consultant what you're looking for. It will guide you through a short discovery and prepare a brief for a human property specialist.</p>
-          <div class="trust-line"><span class="trust-icon">✦</span><span>Thoughtful questions. A clearer brief. A human handover.</span></div>
-          <p class="demo-note">Interactive concept demo · No live property inventory or appointment calendar connected.</p>
-        </div>
-        <div class="chat-card">
-          <div class="chat-top"><div class="assistant-avatar">H<span>H</span></div><div class="assistant-heading"><strong>Property Consultant</strong><small><span class="online-dot"></span> Demo assistant · Ready to help</small></div><button class="reset-chat" id="resetChat" title="Restart conversation" aria-label="Restart conversation">↻</button></div>
-          <div class="chat-progress"><span id="progressBar"></span></div>
-          <div class="chat-messages" id="chatMessages" aria-live="polite">
-            <div class="message assistant"><div class="bubble">Hello and welcome. I can help you shape your Dubai property search. First, are you looking to buy, rent, or explore an investment?</div><span class="message-time">JUST NOW</span></div>
-          </div>
-          <div class="quick-replies" id="quickReplies">
-            <button data-answer="Buy">Buy a property</button><button data-answer="Rent">Rent a property</button><button data-answer="Invest">Invest in Dubai</button>
-          </div>
-          <form class="chat-input-row" id="chatForm"><input id="chatInput" type="text" placeholder="Type your answer..." autocomplete="off" aria-label="Type your answer" /><button type="submit" aria-label="Send message">↑</button></form>
-          <div class="chat-privacy">DEMO ONLY · PLEASE DON'T ENTER SENSITIVE PERSONAL INFORMATION</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="closing section-wrap" id="about"><div class="section-kicker">03 / BUILT AROUND THE CLIENT</div><div class="closing-row"><h2>A better first<br/><em>conversation.</em></h2><div><p>This independent concept demonstrates how an AI-guided property discovery experience could support website visitors and help a sales team receive better-qualified enquiries.</p><a class="button button-dark" href="https://www.hausandhaus.com/" target="_blank" rel="noopener noreferrer">Visit Haus & Haus <span>↗</span></a></div></div></section>
-  </main>
-  <footer class="site-footer"><a class="brand footer-brand" href="#"><span class="brand-mark">H<span>H</span></span><span class="brand-name">haus<span>&</span>haus<small>CONCEPT EXPERIENCE</small></span></a><p>Independent demonstration concept. Not an official Haus & Haus product or service.</p><span>© 2026 · CONCEPT DEMO</span></footer>
-  <script src="script.js"></script>
+<main class="preview">
+  <span class="preview-mark">H<span>&</span>H</span>
+  <p>FLOATING PROPERTY CONSULTANT</p>
+  <h1>A compact assistant.<br><em>Right where visitors need it.</em></h1>
+  <span class="preview-hint">Demo preview · Open the assistant in the bottom-right corner</span>
+</main>
+<div class="hh-widget" id="hhWidget">
+  <section class="hh-panel" id="hhPanel" aria-label="Haus and Haus property consultant" aria-hidden="true">
+    <header class="panel-header">
+      <div class="brand-mark">H<span>H</span></div>
+      <div class="brand-copy"><strong>Property Consultant</strong><small><i></i> Here to help · Demo</small></div>
+      <button class="icon-button" id="resetChat" title="Restart chat" aria-label="Restart chat">↻</button>
+      <button class="icon-button close-button" id="closeChat" title="Close chat" aria-label="Close chat">×</button>
+    </header>
+    <div class="panel-body" id="chatMessages" aria-live="polite">
+      <div class="message assistant"><div class="bubble">Hello and welcome to haus & haus. Are you looking to buy, rent, or explore an investment in Dubai?</div><span class="message-time">PROPERTY CONSULTANT · DEMO</span></div>
+    </div>
+    <div class="suggestions" id="quickReplies">
+      <button data-answer="Buy">Buy</button><button data-answer="Rent">Rent</button><button data-answer="Invest">Invest</button>
+    </div>
+    <form class="composer" id="chatForm"><input id="chatInput" type="text" placeholder="Type your message…" autocomplete="off" aria-label="Type your message"><button type="submit" aria-label="Send message">↑</button></form>
+    <footer class="panel-footer">INDEPENDENT CONCEPT DEMO · NOT AN OFFICIAL H&H SERVICE</footer>
+  </section>
+  <button class="launcher" id="launcher" aria-label="Open property consultant" aria-expanded="false"><span class="launcher-icon">✦</span><span class="launcher-label">Ask us</span><span class="launcher-close">×</span></button>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
