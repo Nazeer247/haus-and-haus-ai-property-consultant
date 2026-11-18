@@ -1,139 +1,29 @@
-const chatMessages=document.getElementById('chatMessages');
-const quickReplies=document.getElementById('quickReplies');
-const chatForm=document.getElementById('chatForm');
-const chatInput=document.getElementById('chatInput');
-const progressBar=document.getElementById('progressBar');
-const resetChat=document.getElementById('resetChat');
-const menuToggle=document.querySelector('.menu-toggle');
-const nav=document.querySelector('.desktop-nav');
-
-const steps=[
-  {key:'intent',question:'Are you looking to buy, rent, or explore an investment?',options:['Buy','Rent','Invest']},
-  {key:'area',question:'Which Dubai areas interest you? You can name one or more, or say “not sure yet”.',options:['Dubai Marina','Downtown Dubai','Palm Jumeirah','Not sure yet']},
-  {key:'budget',question:'What budget range should I keep in mind? A range is absolutely fine.',options:['Under AED 1M','AED 1M–2M','AED 2M–5M','AED 5M+','Still exploring']},
-  {key:'bedrooms',question:'How many bedrooms would suit your plans?',options:['Studio','1 bedroom','2 bedrooms','3 bedrooms','4+ bedrooms','Flexible']},
-  {key:'type',question:'What kind of property are you most interested in?',options:['Apartment','Villa / townhouse','Penthouse','Open to suggestions']},
-  {key:'timing',question:'When would you ideally like to make your move?',options:['As soon as possible','Within 1–3 months','Within 3–6 months','Just researching']},
-  {key:'name',question:'What should I call you? (You can use a first name or skip this.)',options:['Skip']},
-  {key:'contact',question:'How would you prefer the team to follow up? This demo does not send or store your details. You can type an email or phone number, or skip.',options:['Skip']}
+const widget=document.getElementById('hhWidget'),panel=document.getElementById('hhPanel'),launcher=document.getElementById('launcher');
+const messages=document.getElementById('chatMessages'),replies=document.getElementById('quickReplies'),form=document.getElementById('chatForm'),input=document.getElementById('chatInput');
+const reset=document.getElementById('resetChat'),close=document.getElementById('closeChat');
+const listings=[
+ {price:'AED 13,150,000',title:'5-bedroom villa · Meadows 1',meta:'The Meadows, Dubai · 5 beds · 5 baths · 3,805 sq.ft',url:'https://www.hausandhaus.com/properties/for-sale/in-dubai/5-bedroom-villa-for-sale-in-meadows-1-the-meadows-dubai/152202/',photo:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=700&q=80'},
+ {price:'AED 4,200,000',title:'3-bedroom townhouse · Al Furjan West',meta:'Al Furjan, Dubai · 3 beds · 3 baths · 2,018 sq.ft',url:'https://www.hausandhaus.com/properties/for-sale/in-dubai/3-bedroom-townhouse-for-sale-in-al-furjan-west-al-furjan-dubai/147714/',photo:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=700&q=80'},
+ {price:'AED 5,500,000',title:'3-bedroom villa · Springs 3',meta:'The Springs, Dubai · 3 beds · 3 baths · 1,764 sq.ft',url:'https://www.hausandhaus.com/properties/for-sale/in-dubai/3-bedroom-villa-for-sale-in-springs-3-the-springs-dubai/112181/',photo:'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=700&q=80'}
 ];
-let currentStep=0;
-let answers={};
-
-function addMessage(text,who='assistant'){
-  const wrap=document.createElement('div');
-  wrap.className='message '+who;
-  const bubble=document.createElement('div');
-  bubble.className='bubble';
-  bubble.textContent=text;
-  const time=document.createElement('span');
-  time.className='message-time';
-  time.textContent=who==='user'?'YOU':'PROPERTY CONSULTANT · DEMO';
-  wrap.append(bubble,time);
-  chatMessages.appendChild(wrap);
-  chatMessages.scrollTop=chatMessages.scrollHeight;
-}
-function setProgress(){
-  const pct=Math.max(8,Math.round((currentStep/steps.length)*100));
-  progressBar.style.width=pct+'%';
-}
-function showOptions(options){
-  quickReplies.innerHTML='';
-  options.forEach(option=>{
-    const button=document.createElement('button');
-    button.type='button';
-    button.textContent=option;
-    button.dataset.answer=option;
-    quickReplies.appendChild(button);
-  });
-  quickReplies.hidden=false;
-}
-function askCurrent(){
-  if(currentStep>=steps.length){showSummary();return;}
-  const step=steps[currentStep];
-  addMessage(step.question);
-  showOptions(step.options);
-  setProgress();
-  chatInput.placeholder=step.key==='contact'?'Optional contact detail or type “skip”...':'Type your answer...';
-}
-function submitAnswer(value){
-  const answer=value.trim();
-  if(!answer)return;
-  addMessage(answer,'user');
-  const step=steps[currentStep];
-  answers[step.key]=answer;
-  currentStep++;
-  quickReplies.hidden=true;
-  setProgress();
-  window.setTimeout(askCurrent,280);
-}
-function showSummary(){
-  progressBar.style.width='100%';
-  quickReplies.hidden=true;
-  chatInput.disabled=true;
-  chatForm.querySelector('button').disabled=true;
-  const lines=[
-    'PROPERTY SEARCH BRIEF',
-    'Intent: '+(answers.intent||'Not specified'),
-    'Preferred area: '+(answers.area||'Not specified'),
-    'Budget: '+(answers.budget||'Not specified'),
-    'Bedrooms: '+(answers.bedrooms||'Not specified'),
-    'Property type: '+(answers.type||'Not specified'),
-    'Timing: '+(answers.timing||'Not specified'),
-    'Name: '+(answers.name||'Not provided'),
-    'Preferred follow-up: '+(answers.contact||'Not provided')
-  ];
-  const summary=lines.join('\n');
-  addMessage('Thank you. Your discovery brief is ready. In a live implementation, this could be securely routed to the Haus & Haus team. This demo does not transmit or save your answers.');
-  const card=document.createElement('div');
-  card.className='message assistant';
-  const bubble=document.createElement('div');
-  bubble.className='bubble';
-  const pre=document.createElement('pre');
-  pre.style.cssText='white-space:pre-wrap;font:10px/1.7 "DM Sans",sans-serif;margin:0;color:inherit';
-  pre.textContent=summary;
-  const copy=document.createElement('button');
-  copy.type='button';
-  copy.textContent='Copy my brief';
-  copy.style.cssText='margin-top:12px;padding:9px 12px;background:#1b281f;color:white;border:0;font:10px "DM Sans",sans-serif;cursor:pointer';
-  copy.addEventListener('click',async()=>{
-    try{await navigator.clipboard.writeText(summary);copy.textContent='Copied';}
-    catch(e){copy.textContent='Select and copy the brief';}
-  });
-  bubble.append(pre,copy);card.appendChild(bubble);chatMessages.appendChild(card);
-  const restart=document.createElement('button');
-  restart.type='button';restart.textContent='Start a new search';restart.className='restart-button';
-  restart.style.cssText='align-self:flex-start;margin:0 22px 15px;padding:9px 12px;border:1px solid #c7b28d;background:transparent;color:#4b574c;font:10px "DM Sans",sans-serif;cursor:pointer';
-  restart.addEventListener('click',resetConversation);
-  chatMessages.appendChild(restart);
-  chatMessages.scrollTop=chatMessages.scrollHeight;
-  chatInput.placeholder='Discovery complete';
-}
-function resetConversation(){
-  currentStep=0;answers={};chatMessages.innerHTML='';
-  chatInput.disabled=false;chatForm.querySelector('button').disabled=false;
-  chatInput.value='';quickReplies.hidden=false;
-  addMessage('Welcome back. Let’s shape a fresh Dubai property search. Are you looking to buy, rent, or explore an investment?');
-  showOptions(steps[0].options);setProgress();
-  chatInput.placeholder='Type your answer...';
-}
-quickReplies.addEventListener('click',event=>{
-  const button=event.target.closest('button[data-answer]');
-  if(button)submitAnswer(button.dataset.answer);
-});
-chatForm.addEventListener('submit',event=>{
-  event.preventDefault();
-  const value=chatInput.value;
-  chatInput.value='';
-  if(currentStep<steps.length)submitAnswer(value);
-});
-resetChat.addEventListener('click',resetConversation);
-if(menuToggle&&nav){
-  menuToggle.addEventListener('click',()=>{
-    const open=nav.classList.toggle('mobile-open');
-    menuToggle.setAttribute('aria-expanded',String(open));
-  });
-  nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>nav.classList.remove('mobile-open')));
-}
-showOptions(steps[0].options);
-setProgress();
+const questions=[
+ {key:'intent',q:'Are you looking to buy, rent, or invest?',opts:['Buy','Rent','Invest']},
+ {key:'area',q:'Which Dubai area interests you? You can name one or choose “Not sure”.',opts:['Dubai Marina','Downtown Dubai','Dubai Hills Estate','Not sure yet']},
+ {key:'budget',q:'What budget range should I consider?',opts:['Under AED 1M','AED 1M–2M','AED 2M–5M','AED 5M+','Still exploring']},
+ {key:'beds',q:'How many bedrooms do you need?',opts:['Studio','1 bedroom','2 bedrooms','3 bedrooms','4+ bedrooms','Flexible']},
+ {key:'type',q:'What property type do you prefer?',opts:['Apartment','Villa / townhouse','Penthouse','Open to suggestions']}
+];
+let step=0,answers={};
+function openPanel(){widget.classList.add('open');panel.setAttribute('aria-hidden','false');launcher.setAttribute('aria-expanded','true');setTimeout(()=>input.focus(),180)}
+function closePanel(){widget.classList.remove('open');panel.setAttribute('aria-hidden','true');launcher.setAttribute('aria-expanded','false')}
+launcher.addEventListener('click',()=>widget.classList.contains('open')?closePanel():openPanel());
+close.addEventListener('click',closePanel);
+function addMessage(text,who='assistant'){const wrap=document.createElement('div');wrap.className='message '+who;const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent=text;const time=document.createElement('span');time.className='message-time';time.textContent=who==='user'?'YOU':'PROPERTY CONSULTANT · DEMO';wrap.append(bubble,time);messages.append(wrap);messages.scrollTop=messages.scrollHeight}
+function showOptions(options){replies.replaceChildren();options.forEach(label=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.answer=label;replies.append(b)});replies.hidden=false}
+function ask(){if(step>=questions.length){showListings();return}const q=questions[step];addMessage(q.q);showOptions(q.opts)}
+function answer(value){value=value.trim();if(!value||step>=questions.length)return;addMessage(value,'user');answers[questions[step].key]=value;step++;replies.hidden=true;input.value='';window.setTimeout(ask,220)}
+replies.addEventListener('click',e=>{const b=e.target.closest('button[data-answer]');if(b)answer(b.dataset.answer)});
+form.addEventListener('submit',e=>{e.preventDefault();answer(input.value)});
+function showListings(){addMessage('Thanks. Here are a few examples from public Haus & Haus sale listings. Prices and availability can change, so open the original listing to verify current details.');const rail=document.createElement('div');rail.className='property-rail';listings.forEach(p=>{const card=document.createElement('article');card.className='property-card';const photo=document.createElement('div');photo.className='property-photo';const img=document.createElement('img');img.src=p.photo;img.alt='Illustrative property photo, not the actual listing';img.loading='lazy';img.onerror=()=>{img.remove();photo.style.background='linear-gradient(135deg,#b8b7a9,#e4ded0)'};const note=document.createElement('span');note.className='photo-note';note.textContent='ILLUSTRATIVE PHOTO';photo.append(img,note);const info=document.createElement('div');info.className='property-info';const price=document.createElement('div');price.className='property-price';price.textContent=p.price;const title=document.createElement('div');title.className='property-title';title.textContent=p.title;const meta=document.createElement('div');meta.className='property-meta';meta.textContent=p.meta;const link=document.createElement('a');link.className='property-link';link.href=p.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='VIEW OFFICIAL LISTING ↗';info.append(price,title,meta,link);card.append(photo,info);rail.append(card)});const wrap=document.createElement('div');wrap.className='message assistant';wrap.append(rail);messages.append(wrap);messages.scrollTop=messages.scrollHeight;addMessage('These are sample matches, not live search results. Tell me your budget and area preferences and the team can confirm current options.');replies.hidden=true;input.placeholder='Ask another question…'}
+function resetChat(){step=0;answers={};messages.replaceChildren();addMessage('Hello and welcome to haus & haus. Are you looking to buy, rent, or explore an investment in Dubai?');showOptions(questions[0].opts);input.disabled=false;form.querySelector('button').disabled=false;input.placeholder='Type your message…'}
+reset.addEventListener('click',resetChat);showOptions(questions[0].opts);
